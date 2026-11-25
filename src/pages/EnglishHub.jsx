@@ -1,4 +1,5 @@
 import { useState, useEffect, useRef } from "react";
+import { GAPS, RECHECK_DAYS, todayStr, nextRev, isDue, grade, scoreReading, ROADMAP, roadmapProgress } from "./learning";
 
 /* ════════════════════════════════════════════════════════════════════════════
    ENGLISH HUB — study OS cho dân IT luyện IELTS
@@ -6,52 +7,17 @@ import { useState, useEffect, useRef } from "react";
 ════════════════════════════════════════════════════════════════════════════ */
 
 // ─── Storage ──────────────────────────────────────────────────────────────────
-const save = async (k, v) => { try { await window.storage.set(k, JSON.stringify(v)); } catch (e) {} };
+// window.storage chỉ có trong Claude Artifact; ở trình duyệt thường thì dùng localStorage.
+const localStore = {
+  get: async (k) => { const v = localStorage.getItem(k); return v === null ? null : { value: v }; },
+  set: async (k, v) => localStorage.setItem(k, v),
+};
+const store = () => window.storage || localStore;
+const save = async (k, v) => { try { await store().set(k, JSON.stringify(v)); } catch { /* bộ nhớ đầy/bị chặn: bỏ qua */ } };
 const load = async (k, d = null) => {
-  try { const r = await window.storage.get(k); if (r) return JSON.parse(r.value); } catch (e) {}
+  try { const r = await store().get(k); if (r) return JSON.parse(r.value); } catch { /* dữ liệu hỏng: dùng mặc định */ }
   return d;
 };
-
-// ─── Spaced repetition ──────────────────────────────────────────────────────
-const GAPS = [1, 3, 7, 14, 30];
-const todayStr = () => new Date().toISOString().slice(0, 10);
-const addDays = (n) => { const d = new Date(); d.setDate(d.getDate() + n); return d.toISOString().slice(0, 10); };
-const nextRev = (c) => addDays(GAPS[Math.min(c, GAPS.length - 1)]);
-const isDue = (w) => !w.mastered && w.nextReview <= todayStr();
-
-// ─── 30-day roadmap ───────────────────────────────────────────────────────────
-const ROADMAP = [
-  { day:1,  theme:'Quy trình kỹ thuật',          icon:'⚙️', words:['implement','deploy','optimize','configure','troubleshoot'] },
-  { day:2,  theme:'Phân tích hệ thống',           icon:'🔍', words:['analyze','diagnose','evaluate','assess','resolve'] },
-  { day:3,  theme:'Làm việc nhóm & dự án',        icon:'🤝', words:['collaborate','coordinate','delegate','milestone','deadline'] },
-  { day:4,  theme:'Kiến trúc & dữ liệu',          icon:'🏗️', words:['algorithm','framework','scalability','interface','integrate'] },
-  { day:5,  theme:'Trình bày ý tưởng',            icon:'💬', words:['clarify','elaborate','summarize','illustrate','demonstrate'] },
-  { day:6,  theme:'Mindset tích cực',             icon:'💪', words:['resilient','persistent','disciplined','consistent','committed'] },
-  { day:7,  theme:'Cảm xúc & trạng thái',         icon:'🧠', words:['overwhelmed','anxious','motivated','frustrated','confident'] },
-  { day:8,  theme:'Mối quan hệ',                  icon:'❤️', words:['empathize','boundary','conflict','reconcile','appreciate'] },
-  { day:9,  theme:'Sức khoẻ tâm thần',            icon:'🌱', words:['mindfulness','burnout','cope','recover','balance'] },
-  { day:10, theme:'Ra quyết định',                icon:'⚖️', words:['deliberate','prioritize','consequence','weigh','justify'] },
-  { day:11, theme:'Từ vựng phim ảnh',             icon:'🎬', words:['narrative','genre','plot','character','cinematography'] },
-  { day:12, theme:'Đánh giá & cảm nhận',          icon:'🌟', words:['compelling','intriguing','predictable','inspiring','thought-provoking'] },
-  { day:13, theme:'Lập luận & phản biện',         icon:'🗣️', words:['perspective','argue','contradict','acknowledge','refute'] },
-  { day:14, theme:'Phân tích & diễn giải',        icon:'🔭', words:['critique','interpret','symbolize','represent','convey'] },
-  { day:15, theme:'Công nghệ & xã hội',           icon:'🌐', words:['transform','revolutionize','disrupt','innovate','impact'] },
-  { day:16, theme:'IELTS – Xu hướng & số liệu',   icon:'📊', words:['fluctuate','significant','considerable','dramatic','steady'] },
-  { day:17, theme:'IELTS – Vấn đề & giải pháp',   icon:'🛠️', words:['address','overcome','tackle','mitigate','alleviate'] },
-  { day:18, theme:'IELTS – Nguyên nhân & kết quả',icon:'🔗', words:['consequently','therefore','whereas','nevertheless','contribute'] },
-  { day:19, theme:'IELTS – Công nghệ tương lai',  icon:'🤖', words:['artificial','automate','emerge','sustainable','efficiency'] },
-  { day:20, theme:'IELTS – Diễn đạt quan điểm',   icon:'✍️', words:['arguably','essentially','predominantly','relatively','apparently'] },
-  { day:21, theme:'TOEIC – Tài chính',            icon:'💼', words:['negotiate','allocate','budget','revenue','expenditure'] },
-  { day:22, theme:'TOEIC – Văn phòng',            icon:'📧', words:['correspond','schedule','agenda','minutes','memo'] },
-  { day:23, theme:'TOEIC – Nhân sự',              icon:'👥', words:['recruitment','performance','evaluation','promotion','resignation'] },
-  { day:24, theme:'IT Business English',          icon:'💻', words:['specification','requirement','prototype','iteration','deployment'] },
-  { day:25, theme:'IT nâng cao',                  icon:'🔧', words:['infrastructure','architecture','maintenance','documentation','debugging'] },
-  { day:26, theme:'Tâm lý học nâng cao',          icon:'🧩', words:['cognitive','behavioral','subconscious','perception','motivation'] },
-  { day:27, theme:'Phát triển bản thân',          icon:'🚀', words:['accountability','procrastinate','productive','efficient','resilience'] },
-  { day:28, theme:'Truyền thông & văn hoá',       icon:'🎭', words:['stereotype','narrative','representation','diversity','influence'] },
-  { day:29, theme:'IELTS Academic',               icon:'📚', words:['hypothesis','methodology','evidence','implication','coherent'] },
-  { day:30, theme:'IELTS Writing nâng cao',       icon:'🏆', words:['lexical','paraphrase','cohesive','elaborate','concise'] },
-];
 
 // ─── Pronunciation samples ──────────────────────────────────────────────────
 const SAMPLES = [
@@ -74,26 +40,30 @@ function speak(text, rate = 0.82) {
 }
 
 // ─── AI ────────────────────────────────────────────────────────────────────────
-async function callAI(words) {
+async function askAI(prompt) {
   const res = await fetch("https://api.anthropic.com/v1/messages", {
     method:"POST", headers:{"Content-Type":"application/json"},
-    body:JSON.stringify({ model:"claude-sonnet-4-6", max_tokens:1000,
-      messages:[{role:"user",content:`Vietnamese learner: IT professional studying for IELTS, interested in technology and psychology. Words: ${words.join(', ')}\n\nReturn ONLY valid JSON:\n{"words":[{"word":"...","vi":"Vietnamese meaning","type":"noun/verb/adj/adv","ipa":"phonetic"}],"story":"Natural 7-9 sentence English dialogue/story using ALL words. Conversational, mix professional and casual.","storyVi":"Vietnamese translation"}`}]})
+    body:JSON.stringify({ model:"claude-sonnet-4-6", max_tokens:4000, messages:[{role:"user",content:prompt}] })
   });
   const data = await res.json();
-  return JSON.parse((data.content?.[0]?.text || '').replace(/```json|```/g, '').trim());
+  const text = data.content?.find(b => b.type === 'text')?.text || '';
+  return JSON.parse(text.replace(/```json|```/g, '').trim());
 }
-async function callAISuggest(learned) {
-  const res = await fetch("https://api.anthropic.com/v1/messages", {
-    method:"POST", headers:{"Content-Type":"application/json"},
-    body:JSON.stringify({ model:"claude-sonnet-4-6", max_tokens:400,
-      messages:[{role:"user",content:`IT professional preparing for IELTS. Interests: technology, movies, psychology. Already learned: ${learned.slice(-50).join(', ')||'none'}.\n\nSuggest 5 NEW English words not in the list. Return ONLY JSON:\n{"words":["w1","w2","w3","w4","w5"],"theme":"theme in Vietnamese","reason":"1 sentence in Vietnamese"}`}]})
-  });
-  const data = await res.json();
-  return JSON.parse((data.content?.[0]?.text || '').replace(/```json|```/g, '').trim());
-}
+const callAI = (words) => askAI(`Vietnamese learner: IT professional studying for IELTS (target band 6.5–7). Words: ${words.join(', ')}
 
-const esc = (s) => s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+Return ONLY valid JSON, with the words in the same order and each "word" exactly as given:
+{"words":[{"word":"...","vi":"Vietnamese meaning; if the word has 2 common meanings, give both separated by ' / '","type":"noun/verb/adj/adv","ipa":"phonetic","collocations":["2-3 common collocations useful for IELTS Speaking/Writing, e.g. 'address an issue'"],"example":"one natural IELTS-style example sentence using the word"}],"story":"Natural 7-9 sentence English dialogue/story using ALL words. Conversational, mix professional and casual.","storyVi":"Vietnamese translation"}`);
+const callAISuggest = (learned) => askAI(`IT professional preparing for IELTS (target band 6.5–7). Interests: technology, movies, psychology. Already learned: ${learned.slice(-50).join(', ')||'none'}.
+
+Suggest 5 NEW English words not in the list, useful for IELTS Writing Task 2 or Speaking topics, not basic IT jargon. Return ONLY JSON:
+{"words":["w1","w2","w3","w4","w5"],"theme":"theme in Vietnamese","reason":"1 sentence in Vietnamese"}`);
+const callAICheck = (words, sentences) => askAI(`A Vietnamese IT professional preparing for IELTS wrote these sentences to practise the words: ${words.join(', ')}.
+
+Sentences (one per line):
+${sentences}
+
+For each sentence, check grammar, word choice, collocation and whether the target word is used correctly. Return ONLY JSON:
+{"items":[{"sentence":"the learner's sentence","ok":true,"fixed":"corrected, natural version (same as the sentence if already good)","note":"short explanation in Vietnamese"}]}`);
 
 // ═══════════════════════════════════════════════════════════════════════════════
 const STYLES = `
@@ -217,6 +187,13 @@ const STYLES = `
 }
 `;
 
+// Câu ví dụ đã che từ cần nhớ; null nếu không che được (để không lộ đáp án).
+const cloze = (w) => {
+  if (!w.example) return null;
+  const c = w.example.replace(new RegExp(w.word.replace(/[.*+?^${}()|[\]\\]/g, '\\$&'), 'gi'), '____');
+  return c === w.example ? null : c;
+};
+
 // ─── Small components ────────────────────────────────────────────────────────
 const Pill = ({ children, c }) => (
   <span className="eh-pill" style={{ background:`${c}1f`, color:c, border:`1px solid ${c}3a` }}>{children}</span>
@@ -240,6 +217,10 @@ export default function App() {
   const [showVi, setShowVi]   = useState(false);
   const [aiSug, setAiSug]     = useState(null);
   const [viewDay, setViewDay] = useState(null);
+  const [typed, setTyped]     = useState('');      // đáp án gõ ở thẻ đảo chiều
+  const [practice, setPractice] = useState('');    // câu tự đặt
+  const [feedback, setFeedback] = useState(null);
+  const [checking, setChecking] = useState(false);
 
   // pronunciation state
   const [pText, setPText]     = useState('');
@@ -276,7 +257,7 @@ export default function App() {
     if (!('speechSynthesis' in window)) return;
     const lv = () => {
       let v = speechSynthesis.getVoices().filter(x => x.lang.startsWith('en'));
-      v.sort((a,b)=> a.name.includes('Google')?-1:1);
+      v.sort((a,b)=> b.name.includes('Google') - a.name.includes('Google'));
       setPVoices(v);
     };
     speechSynthesis.onvoiceschanged = lv; lv();
@@ -284,9 +265,11 @@ export default function App() {
 
   const due = bank.filter(isDue);
   const learnedDays = sessions.length;
-  const todayRoadmap = ROADMAP[learnedDays] || null;
+  const { done: roadmapDone, current: todayRoadmap } = roadmapProgress(bank);
   const todayDone = sessions.some(s => s.date === todayStr());
   const mastered = bank.filter(w => w.mastered).length;
+  const card = dueList[qi];
+  const reverse = card && card.reviewCount >= 1; // từ lần ôn thứ 2: nhìn nghĩa → tự nhớ ra từ
 
   // ── Vocab actions ──
   async function generate(override) {
@@ -297,26 +280,35 @@ export default function App() {
     try {
       const parsed = await callAI(words);
       const t = todayStr();
-      const wo = parsed.words.map(w=>({ id:w.word.toLowerCase()+'_'+Date.now()+Math.random().toString(36).slice(2,5), word:w.word, vi:w.vi, type:w.type, ipa:w.ipa||'', learnedDate:t, reviewCount:0, nextReview:nextRev(0), mastered:false }));
+      const wo = parsed.words.map(w=>({ id:w.word.toLowerCase()+'_'+Date.now()+Math.random().toString(36).slice(2,5), word:w.word, vi:w.vi, type:w.type, ipa:w.ipa||'', collocations:Array.isArray(w.collocations)?w.collocations.map(String):[], example:typeof w.example==='string'?w.example:'', learnedDate:t, reviewCount:0, nextReview:nextRev(0), mastered:false }));
       const ns = { date:t, wordList:wo, story:parsed.story, storyVi:parsed.storyVi };
       const nb = [...bank, ...wo]; const ns2 = [...sessions.filter(s=>s.date!==t), ns];
       await save('eh_bank', nb); await save('eh_sess', ns2);
       setBank(nb); setSess(ns2); setLesson(ns); setDue(nb.filter(isDue));
-      setPage('lesson'); setShowVi(false); setInput('');
-    } catch(e){ setErr('Có lỗi xảy ra. Kiểm tra kết nối và thử lại.'); }
+      setPage('lesson'); setShowVi(false); setInput(''); setPractice(''); setFeedback(null);
+    } catch { setErr('Có lỗi xảy ra. Kiểm tra kết nối và thử lại.'); }
     setLoading(false);
   }
   async function getSuggest() {
     setSugg(true); setErr('');
     try { setAiSug(await callAISuggest(bank.map(w=>w.word))); }
-    catch(e){ setErr('Không lấy được đề xuất. Thử lại.'); }
+    catch { setErr('Không lấy được đề xuất. Thử lại.'); }
     setSugg(false);
   }
-  function startReview(){ setDue(due); setQi(0); setFlip(false); setDone(false); setPage('review'); }
+  async function checkPractice() {
+    if (!practice.trim()) return;
+    setChecking(true); setFeedback(null);
+    try { const r = await callAICheck(lesson.wordList.map(w=>w.word), practice.trim()); setFeedback(Array.isArray(r.items) ? r.items : []); }
+    catch { setFeedback([]); }
+    setChecking(false);
+  }
+  function pickLesson(s){ setLesson(s); setShowVi(false); setPractice(''); setFeedback(null); }
+  function startReview(){ setDue(due); setQi(0); setFlip(false); setTyped(''); setDone(false); setPage('review'); }
+  const go = (id) => id === 'review' ? startReview() : setPage(id); // vào tab Ôn tập luôn lấy danh sách đến hạn mới nhất
+  function reveal(){ setFlip(true); speak(card.word); }
   async function answer(ok){
-    const w = dueList[qi];
-    const nb = bank.map(x=>{ if(x.id!==w.id) return x; const c=ok?x.reviewCount+1:Math.max(0,x.reviewCount-1); return{...x,reviewCount:c,nextReview:nextRev(c),mastered:ok&&c>=GAPS.length}; });
-    await save('eh_bank', nb); setBank(nb); setFlip(false);
+    const nb = bank.map(x => x.id === card.id ? grade(x, ok) : x);
+    await save('eh_bank', nb); setBank(nb); setFlip(false); setTyped('');
     if (qi+1>=dueList.length){ setDone(true); setDue(nb.filter(isDue)); } else setQi(qi+1);
   }
   async function clearAll(){
@@ -358,11 +350,11 @@ export default function App() {
   async function startRec(){
     let stream;
     try { stream = await navigator.mediaDevices.getUserMedia({audio:true}); }
-    catch(e){ alert('Không truy cập được microphone. Hãy cho phép quyền micro trong trình duyệt.\n\n(Nếu đang xem trong khung chat, hãy tải bản .html về và mở bằng Chrome để ghi âm.)'); return; }
+    catch { alert('Không truy cập được microphone. Hãy cho phép quyền micro trong trình duyệt.\n\n(Nếu đang xem trong khung chat, hãy tải bản .html về và mở bằng Chrome để ghi âm.)'); return; }
     streamRef.current=stream; stopTTS();
-    try{ const ac=new (window.AudioContext||window.webkitAudioContext)(); const an=ac.createAnalyser(); an.fftSize=512; ac.createMediaStreamSource(stream).connect(an); actxRef.current=ac; anRef.current=an; }catch(e){}
-    const mime=['audio/webm;codecs=opus','audio/webm','audio/mp4'].find(t=>{try{return MediaRecorder.isTypeSupported(t);}catch(e){return false;}})||'';
-    let mr; try{ mr=mime?new MediaRecorder(stream,{mimeType:mime}):new MediaRecorder(stream); }catch(e){ mr=new MediaRecorder(stream); }
+    try{ const ac=new (window.AudioContext||window.webkitAudioContext)(); const an=ac.createAnalyser(); an.fftSize=512; ac.createMediaStreamSource(stream).connect(an); actxRef.current=ac; anRef.current=an; }catch{ /* không có sóng âm vẫn ghi được */ }
+    const mime=['audio/webm;codecs=opus','audio/webm','audio/mp4'].find(t=>{try{return MediaRecorder.isTypeSupported(t);}catch{return false;}})||'';
+    let mr; try{ mr=mime?new MediaRecorder(stream,{mimeType:mime}):new MediaRecorder(stream); }catch{ mr=new MediaRecorder(stream); }
     mrRef.current=mr; const chunks=[];
     mr.ondataavailable=e=>{ if(e.data&&e.data.size>0)chunks.push(e.data); };
     mr.onstop=()=>{ const blob=new Blob(chunks,{type:mr.mimeType||'audio/webm'}); if(recURL)URL.revokeObjectURL(recURL); const url=URL.createObjectURL(blob); setRecURL(url); setRecState('done'); };
@@ -373,7 +365,7 @@ export default function App() {
   function stopRec(){
     if(mrRef.current&&mrRef.current.state!=='inactive')mrRef.current.stop();
     if(streamRef.current){streamRef.current.getTracks().forEach(t=>t.stop());streamRef.current=null;}
-    try{if(actxRef.current)actxRef.current.close();}catch(e){} actxRef.current=null; anRef.current=null;
+    try{if(actxRef.current)actxRef.current.close();}catch{ /* đã đóng */ } actxRef.current=null; anRef.current=null;
     clearInterval(timerRef.current); cancelAnimationFrame(afrRef.current);
     setTimeout(()=>drawIdle(),60);
   }
@@ -401,17 +393,7 @@ export default function App() {
     r.onerror=(e)=>{ setStt('idle'); if(e.error==='not-allowed')alert('Không có quyền micro.'); };
     r.start(); setStt('listening'); setSttText(''); setSttScore(null);
   }
-  function scoreStt(spoken){
-    const sw=spoken.toLowerCase().replace(/[.,!?;:"']/g,'').split(/\s+/).filter(Boolean);
-    if(pText){
-      const orig=new Set(pText.toLowerCase().replace(/[.,!?;:"'\n]/g,'').split(/\s+/).filter(Boolean));
-      let correct=0; const html=sw.map(w=>{const ok=orig.has(w); if(ok)correct++; return `<span class="${ok?'eh-w-ok':'eh-w-err'}">${esc(w)}</span>`;}).join(' ');
-      const pct=sw.length?Math.round(correct/sw.length*100):0;
-      setSttScore({html,pct,correct,total:sw.length});
-    } else {
-      setSttScore({html:`<span style="color:var(--text)">${esc(spoken)}</span>`,pct:null,total:sw.length});
-    }
-  }
+  function scoreStt(spoken){ setSttScore(scoreReading(pText, spoken)); }
 
   if (!init) return <div className="eh-root"><div style={{display:'flex',minHeight:'100vh',alignItems:'center',justifyContent:'center',color:'var(--dim)',fontFamily:'var(--sans)'}}>Đang tải…</div><style>{STYLES}</style></div>;
 
@@ -457,7 +439,7 @@ export default function App() {
             <div key={g.grp}>
               <div className="eh-navgroup-label">{g.grp}</div>
               {g.items.map(it => (
-                <button key={it.id} className={`eh-nav ${page===it.id?'on':''}`} onClick={()=>setPage(it.id)}>
+                <button key={it.id} className={`eh-nav ${page===it.id?'on':''}`} onClick={()=>go(it.id)}>
                   <span className="ic">{it.ic}</span>{it.label}
                   {it.badge>0 && <span className="dot">{it.badge}</span>}
                 </button>
@@ -465,8 +447,8 @@ export default function App() {
             </div>
           ))}
           <div className="eh-side-foot">
-            <div className="eh-progress-mini"><span>TIẾN ĐỘ</span><span>{learnedDays}/30 ngày</span></div>
-            <div className="eh-bar"><i style={{width:`${Math.min(learnedDays/30*100,100)}%`}}/></div>
+            <div className="eh-progress-mini"><span>LỘ TRÌNH</span><span>{roadmapDone.size}/{ROADMAP.length} ngày</span></div>
+            <div className="eh-bar"><i style={{width:`${roadmapDone.size/ROADMAP.length*100}%`}}/></div>
           </div>
         </aside>
 
@@ -522,7 +504,7 @@ export default function App() {
                 <Pill c="var(--cyan)">🤖 Công nghệ</Pill>
                 <Pill c="var(--green)">🧠 Tâm lý học</Pill>
               </div>
-              <p style={{color:'var(--dim)',fontSize:12.5,lineHeight:1.6,margin:0}}>Lộ trình 30 ngày thiết kế riêng: tuần 1–2 IT &amp; tâm lý, tuần 3 phim ảnh &amp; lập luận, tuần 4 IELTS Academic, tuần 5–6 TOEIC &amp; nâng cao.</p>
+              <p style={{color:'var(--dim)',fontSize:12.5,lineHeight:1.6,margin:0}}>Lộ trình 30 ngày: ngày 1–7 công nghệ, công việc &amp; tâm lý · ngày 8–20 các chủ đề Writing Task 2 (giáo dục, môi trường, sức khoẻ, đô thị, tội phạm, chính phủ, văn hoá, truyền thông, gia đình, phim ảnh) · ngày 21–27 ngôn ngữ Task 1 &amp; Task 2 · ngày 28–30 từ vựng học thuật.</p>
             </div>
           </>)}
 
@@ -567,8 +549,8 @@ export default function App() {
             <p className="eh-sub">Thiết kế theo profile IT + IELTS. Nhấn vào từng ngày để xem trước từ vựng và bắt đầu học.</p></div>
             <div className="eh-card">
               {ROADMAP.map(d=>{
-                const isDone=sessions.some(s=>s.wordList?.some(w=>d.words.includes(w.word)));
-                const isCur=!isDone && ROADMAP.filter(x=>sessions.some(s=>s.wordList?.some(w=>x.words.includes(w.word)))).length === d.day-1;
+                const isDone=roadmapDone.has(d.day);
+                const isCur=todayRoadmap?.day===d.day;
                 return (
                   <div key={d.day} onClick={()=>setViewDay(viewDay===d.day?null:d.day)} style={{padding:'12px 0',borderBottom:'1px solid var(--line-soft)',cursor:'pointer',borderLeft:isCur?'3px solid var(--gold)':'3px solid transparent',paddingLeft:isCur?10:0,background:isCur?'var(--gold-soft)':'transparent',transition:'all .15s'}}>
                     <div style={{display:'flex',alignItems:'center',justifyContent:'space-between'}}>
@@ -606,7 +588,7 @@ export default function App() {
                   <span className="eh-clabel">Chọn bài</span>
                   <div style={{display:'flex',gap:8,flexWrap:'wrap'}}>
                     {sessions.slice(-8).reverse().map(s=>(
-                      <button key={s.date} className={`eh-btn ${s.date===lesson.date?'amber':''}`} style={{fontSize:12,padding:'7px 12px'}} onClick={()=>{setLesson(s);setShowVi(false);}}>{s.date}</button>
+                      <button key={s.date} className={`eh-btn ${s.date===lesson.date?'amber':''}`} style={{fontSize:12,padding:'7px 12px'}} onClick={()=>pickLesson(s)}>{s.date}</button>
                     ))}
                   </div>
                 </div>
@@ -623,6 +605,8 @@ export default function App() {
                       </div>
                       {w.ipa && <div style={{fontFamily:'var(--mono)',fontSize:12,color:'var(--dim)',marginBottom:5}}>/{w.ipa}/</div>}
                       <div style={{fontSize:15.5,color:'var(--gold)',fontWeight:500}}>{w.vi}</div>
+                      {w.collocations?.length>0 && <div style={{fontFamily:'var(--mono)',fontSize:12,color:'var(--cyan)',marginTop:6}}>{w.collocations.join(' · ')}</div>}
+                      {w.example && <div style={{fontSize:13.5,color:'var(--dim)',fontStyle:'italic',marginTop:4,lineHeight:1.5}}>“{w.example}”</div>}
                     </div>
                     <button className="eh-btn" style={{padding:'8px 11px'}} onClick={()=>speak(w.word)}>🔊</button>
                   </div>
@@ -640,6 +624,22 @@ export default function App() {
                 <button className="eh-btn full" style={{marginTop:4,fontSize:12.5}} onClick={()=>setShowVi(!showVi)}>{showVi?'Ẩn bản dịch':'🇻🇳 Xem bản dịch'}</button>
                 {showVi && <div style={{fontSize:14,color:'var(--dim)',lineHeight:1.9,marginTop:12,paddingTop:12,borderTop:'1px solid var(--line-soft)'}}>{lesson.storyVi.split('\n').filter(Boolean).map((l,i)=><p key={i} style={{margin:'0 0 8px'}}>{l}</p>)}</div>}
               </div>
+
+              <div className="eh-card violet">
+                <span className="eh-clabel" style={{color:'var(--violet)'}}>✍️ Tự đặt câu</span>
+                <p style={{fontSize:12.5,color:'var(--dim)',marginBottom:10,lineHeight:1.5}}>Viết 1 câu cho mỗi từ (mỗi câu một dòng). Tự dùng được từ mới là bước biến từ "nhận ra" thành từ "nói/viết được".</p>
+                <textarea className="eh-ta" value={practice} onChange={e=>setPractice(e.target.value)} placeholder={lesson.wordList.map(w=>w.word).join('\n')} />
+                <button className="eh-btn violet full" style={{marginTop:12}} disabled={checking||!practice.trim()} onClick={checkPractice}>{checking?'AI đang chữa…':'AI chữa câu →'}</button>
+                {feedback && (feedback.length===0
+                  ? <p style={{color:'var(--red)',fontSize:13,marginTop:10}}>Không chữa được lúc này. Thử lại sau.</p>
+                  : feedback.map((f,i)=>(
+                    <div key={i} style={{marginTop:12,paddingTop:12,borderTop:'1px solid var(--line-soft)',fontSize:14,lineHeight:1.6}}>
+                      <div style={{color:f.ok?'var(--green)':'var(--red)'}}>{f.ok?'✓':'✗'} {f.sentence}</div>
+                      {!f.ok && f.fixed && <div style={{color:'var(--green)'}}>→ {f.fixed}</div>}
+                      {f.note && <div style={{color:'var(--dim)',fontSize:12.5}}>{f.note}</div>}
+                    </div>
+                  )))}
+              </div>
             </>)}
           </>)}
 
@@ -653,26 +653,37 @@ export default function App() {
                 <p style={{color:'var(--dim)',marginBottom:20}}>{dueList.length===0 && !done ? 'Tuyệt vời — bạn đã ôn hết. Quay lại học từ mới nhé.':'Hẹn gặp lại ngày mai để củng cố trí nhớ.'}</p>
                 <button className="eh-btn green" onClick={()=>setPage('home')}>← Về tổng quan</button>
               </div>
-            ) : dueList[qi] && (<>
+            ) : card && (<>
               <div style={{display:'flex',justifyContent:'space-between',fontFamily:'var(--mono)',fontSize:11,color:'var(--dim)',marginBottom:8}}>
                 <span>THẺ {qi+1} / {dueList.length}</span><span>{mastered} ĐÃ THÀNH THẠO</span>
               </div>
               <div className="eh-bar" style={{marginBottom:20}}><i style={{width:`${(qi/dueList.length)*100}%`,background:'var(--gold)'}}/></div>
-              <div className="eh-card eh-flash" style={{borderColor:flipped?'rgba(245,185,69,.35)':'var(--line)'}} onClick={()=>{setFlip(!flipped);if(!flipped)speak(dueList[qi].word);}}>
-                {!flipped ? (<>
-                  <div style={{fontSize:30,fontWeight:700,marginBottom:12}}>{dueList[qi].word}</div>
+              <div className="eh-card eh-flash" style={{borderColor:flipped?'rgba(245,185,69,.35)':'var(--line)'}} onClick={()=>{ if(reverse && !flipped) return; if(flipped) setFlip(false); else reveal(); }}>
+                {!flipped ? (reverse ? (<>
+                  <Pill c="var(--violet)">NHỚ LẠI TỪ TIẾNG ANH</Pill>
+                  <div style={{fontSize:22,color:'var(--gold)',fontWeight:600,margin:'12px 0 6px'}}>{card.vi}</div>
+                  <Pill c="var(--dim)">{card.type}</Pill>
+                  {cloze(card) && <p style={{color:'var(--dim)',fontSize:13.5,fontStyle:'italic',marginTop:12,lineHeight:1.6,maxWidth:520}}>“{cloze(card)}”</p>}
+                  <input className="eh-sel" style={{marginTop:14,maxWidth:320,textAlign:'center'}} value={typed} autoFocus onChange={e=>setTyped(e.target.value)} onKeyDown={e=>{ if(e.key==='Enter') reveal(); }} placeholder="Gõ từ tiếng Anh…" aria-label="Từ tiếng Anh" />
+                </>) : (<>
+                  <div style={{fontSize:30,fontWeight:700,marginBottom:12}}>{card.word}</div>
                   <p style={{color:'var(--dim)',fontSize:13}}>Bạn có nhớ nghĩa từ này không?</p>
                   <p style={{color:'var(--gold)',fontSize:12,marginTop:8}}>Nhấn để lật thẻ ↻</p>
-                </>) : (<>
-                  <div style={{fontSize:27,fontWeight:700,marginBottom:6}}>{dueList[qi].word}</div>
-                  {dueList[qi].ipa && <div style={{fontFamily:'var(--mono)',fontSize:13,color:'var(--dim)',marginBottom:8}}>/{dueList[qi].ipa}/</div>}
-                  <div style={{fontSize:21,color:'var(--gold)',fontWeight:600,marginBottom:6}}>{dueList[qi].vi}</div>
-                  <Pill c="var(--dim)">{dueList[qi].type}</Pill>
-                  <p style={{fontFamily:'var(--mono)',fontSize:10.5,color:'var(--dim)',marginTop:12}}>đã ôn {dueList[qi].reviewCount} lần · học {dueList[qi].learnedDate}</p>
+                </>)) : (<>
+                  <div style={{fontSize:27,fontWeight:700,marginBottom:6}}>{card.word}</div>
+                  {card.ipa && <div style={{fontFamily:'var(--mono)',fontSize:13,color:'var(--dim)',marginBottom:8}}>/{card.ipa}/</div>}
+                  <div style={{fontSize:21,color:'var(--gold)',fontWeight:600,marginBottom:6}}>{card.vi}</div>
+                  <Pill c="var(--dim)">{card.type}</Pill>
+                  {reverse && typed.trim() && (typed.trim().toLowerCase()===card.word.toLowerCase()
+                    ? <p style={{color:'var(--green)',fontSize:13,marginTop:10}}>✓ Bạn gõ đúng</p>
+                    : <p style={{color:'var(--red)',fontSize:13,marginTop:10}}>✗ Bạn gõ: {typed}</p>)}
+                  {card.collocations?.length>0 && <div style={{fontFamily:'var(--mono)',fontSize:12,color:'var(--cyan)',marginTop:10}}>{card.collocations.join(' · ')}</div>}
+                  {card.example && <p style={{color:'var(--dim)',fontSize:13.5,fontStyle:'italic',marginTop:6,lineHeight:1.6,maxWidth:520}}>“{card.example}”</p>}
+                  <p style={{fontFamily:'var(--mono)',fontSize:10.5,color:'var(--dim)',marginTop:12}}>đã ôn {card.reviewCount} lần · học {card.learnedDate}</p>
                 </>)}
               </div>
               {!flipped ? (
-                <button className="eh-btn full" onClick={()=>{setFlip(true);speak(dueList[qi].word);}}>↻ Lật thẻ xem đáp án</button>
+                <button className="eh-btn full" onClick={reveal}>{reverse ? 'Kiểm tra →' : '↻ Lật thẻ xem đáp án'}</button>
               ) : (
                 <div style={{display:'flex',gap:10}}>
                   <button className="eh-btn red" style={{flex:1,padding:14}} onClick={()=>answer(false)}>Chưa nhớ</button>
@@ -680,7 +691,7 @@ export default function App() {
                 </div>
               )}
               <p style={{fontFamily:'var(--mono)',fontSize:10.5,color:'var(--dim)',textAlign:'center',marginTop:14,lineHeight:1.6}}>
-                Đã nhớ → ôn lại sau {GAPS[Math.min(dueList[qi].reviewCount+1,GAPS.length-1)]} ngày · Chưa nhớ → ôn lại ngày mai
+                Đã nhớ → {card.reviewCount+1>=GAPS.length ? `thành thạo, kiểm tra lại sau ${RECHECK_DAYS} ngày` : `ôn lại sau ${GAPS[card.reviewCount+1]} ngày`} · Chưa nhớ → ôn lại ngày mai
               </p>
             </>)}
           </>)}
@@ -753,17 +764,21 @@ export default function App() {
                   {sttState==='listening' && <span className="eh-pill pulse" style={{background:'var(--violet-soft)',color:'var(--violet)'}}>● đang nghe</span>}
                 </div>
                 <p style={{fontSize:12,color:'var(--dim)',marginBottom:12}}>Đọc đoạn trên thành tiếng — máy nhận dạng và so khớp với bài gốc.</p>
-                <div style={{background:'var(--surface2)',border:'1px solid var(--line)',borderRadius:11,padding:14,minHeight:54,fontSize:15,lineHeight:1.9,marginBottom:12}}
-                     dangerouslySetInnerHTML={{__html: sttScore?sttScore.html : (sttText?esc(sttText):'<span style="color:var(--dim);font-size:14px">Kết quả hiện ở đây…</span>')}} />
-                {sttScore && sttScore.pct!==null && (
+                <div style={{background:'var(--surface2)',border:'1px solid var(--line)',borderRadius:11,padding:14,minHeight:54,fontSize:15,lineHeight:1.9,marginBottom:12}}>
+                  {sttScore ? sttScore.spoken.map((x,i)=><span key={i} className={x.ok?'eh-w-ok':'eh-w-err'}>{x.w}</span>)
+                    : sttText || <span style={{color:'var(--dim)',fontSize:14}}>Kết quả hiện ở đây…</span>}
+                </div>
+                {sttScore && (
                   <div style={{background:'var(--surface2)',borderRadius:11,padding:'12px 14px',marginBottom:12}}>
                     <div className="eh-bar" style={{marginBottom:8}}><i style={{width:`${sttScore.pct}%`,background:sttScore.pct>=80?'var(--green)':sttScore.pct>=50?'var(--gold)':'var(--red)'}}/></div>
                     <div style={{display:'flex',justifyContent:'space-between',alignItems:'center',fontSize:13}}>
-                      <span style={{color:'var(--dim)'}}>Khớp {sttScore.correct}/{sttScore.total} từ</span>
+                      <span style={{color:'var(--dim)'}}>Đọc đúng {sttScore.correct}/{sttScore.total} từ của bài gốc</span>
                       <span style={{fontFamily:'var(--mono)',fontSize:18,fontWeight:700,color:sttScore.pct>=80?'var(--green)':sttScore.pct>=50?'var(--gold)':'var(--red)'}}>{sttScore.pct}%</span>
                     </div>
+                    {sttScore.missed.length>0 && <p style={{fontSize:12.5,color:'var(--dim)',marginTop:8,lineHeight:1.6}}>Bị thiếu hoặc đọc chưa rõ: <span style={{color:'var(--red)'}}>{sttScore.missed.join(', ')}</span></p>}
                   </div>
                 )}
+                <p style={{fontSize:11,color:'var(--faint)',marginBottom:12,lineHeight:1.5}}>Điểm cho biết máy nghe ra bao nhiêu từ, đúng thứ tự. Chưa chấm ngữ điệu và trọng âm. Hãy so ghi âm với giọng mẫu để tự kiểm tra.</p>
                 <div style={{display:'flex',alignItems:'center',gap:10,marginBottom:12}}>
                   <span style={{fontFamily:'var(--mono)',fontSize:11,color:'var(--dim)'}}>GIỌNG</span>
                   <select className="eh-sel" value={sttLang} onChange={e=>setSttLang(e.target.value)} style={{fontSize:13}}>
@@ -786,7 +801,7 @@ export default function App() {
           {/* BANK */}
           {page==='bank' && (<>
             <div className="eh-pagehead"><div className="eh-eyebrow">Kho từ vựng</div><h1 className="eh-title">{bank.length} từ đã học</h1>
-            <p className="eh-sub" style={{fontFamily:'var(--mono)',fontSize:12}}>{mastered} thành thạo · {due.length} cần ôn · {bank.length-mastered-due.length} đang củng cố</p></div>
+            <p className="eh-sub" style={{fontFamily:'var(--mono)',fontSize:12}}>{mastered} thành thạo · {due.length} cần ôn · {bank.filter(w=>!w.mastered&&!isDue(w)).length} đang củng cố</p></div>
             {bank.length===0 ? (
               <div className="eh-card" style={{textAlign:'center',padding:'40px 20px'}}>
                 <div style={{fontSize:30,marginBottom:10}}>▦</div>
@@ -801,10 +816,10 @@ export default function App() {
                       <div style={{display:'flex',alignItems:'center',gap:8,flexWrap:'wrap'}}>
                         <span style={{fontSize:15,fontWeight:600}}>{w.word}</span>
                         {w.mastered && <Pill c="var(--green)">✓</Pill>}
-                        {isDue(w)&&!w.mastered && <Pill c="var(--gold)">cần ôn</Pill>}
+                        {isDue(w) && <Pill c="var(--gold)">cần ôn</Pill>}
                       </div>
                       <div style={{fontSize:13,color:'var(--gold)',marginTop:2}}>{w.vi}</div>
-                      <div style={{fontFamily:'var(--mono)',fontSize:10.5,color:'var(--dim)',marginTop:2}}>ôn {w.reviewCount}× · tiếp {w.mastered?'—':w.nextReview}</div>
+                      <div style={{fontFamily:'var(--mono)',fontSize:10.5,color:'var(--dim)',marginTop:2}}>ôn {w.reviewCount}× · tiếp {w.nextReview}</div>
                     </div>
                     <button className="eh-btn" style={{padding:'8px 11px'}} onClick={()=>speak(w.word)}>🔊</button>
                   </div>
@@ -820,7 +835,7 @@ export default function App() {
       {/* ─── BOTTOM NAV (mobile) ─── */}
       <nav className="eh-bottomnav">
         {BOTTOM.map(it=>(
-          <button key={it.id} className={`eh-bn ${page===it.id?'on':''}`} onClick={()=>setPage(it.id)}>
+          <button key={it.id} className={`eh-bn ${page===it.id?'on':''}`} onClick={()=>go(it.id)}>
             {it.badge>0 && <span className="dot">{it.badge}</span>}
             <span className="ic">{it.ic}</span>{it.label}
           </button>
