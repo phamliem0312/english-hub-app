@@ -76,19 +76,31 @@ Giao diện dùng nền tối. Trên máy tính, điều hướng nằm ở side
 
 Yêu cầu: **Node.js 20.19+** (Vite 8 cần tối thiểu bản này).
 
+Các tính năng AI cần API key của Anthropic. Tạo file `.env` ở thư mục gốc (file này đã nằm trong `.gitignore`):
+
+```
+ANTHROPIC_API_KEY=sk-ant-...
+# AI_MODEL=claude-sonnet-4-6   (tuỳ chọn, mặc định là model này)
+```
+
 ```bash
 npm install
-npm run dev       # chạy dev server tại http://localhost:5173
+npm run dev       # dev server tại http://localhost:5173 (đã có sẵn /api/messages)
 npm run build     # build production vào thư mục dist/
-npm run preview   # xem thử bản build
+npm start         # chạy bản production: phục vụ dist/ + /api/messages tại http://127.0.0.1:3000
+npm run preview   # xem thử bản build bằng Vite
 npm run lint      # kiểm tra code bằng ESLint
 npm test          # chạy unit test (dùng node:test có sẵn, không cần cài thêm gì)
 ```
+
+`npm start` nhận thêm các biến `PORT` và `HOST`. Khi deploy lên server, đặt `HOST=0.0.0.0`.
 
 Công nghệ: React 19 + Vite, không dùng thư viện UI nào khác.
 - [src/pages/EnglishHub.jsx](src/pages/EnglishHub.jsx): giao diện, các lời gọi AI, TTS, ghi âm, nhận dạng giọng nói.
 - [src/pages/learning.js](src/pages/learning.js): phần logic thuần (lịch ôn tập, chấm điểm đọc, lộ trình) để test được.
 - [src/pages/learning.test.js](src/pages/learning.test.js): test cho phần logic trên.
+- [server/ai-proxy.js](server/ai-proxy.js): proxy gọi Claude bằng SDK chính thức. API key chỉ nằm ở server. Model và `max_tokens` do server quyết định, client chỉ gửi được tin nhắn văn bản.
+- [server.js](server.js): server production (dùng sẵn `node:http`, không cần Express).
 
 ---
 
@@ -109,7 +121,7 @@ Công nghệ: React 19 + Vite, không dùng thư viện UI nào khác.
 ## ⚠️ Lưu ý & giới hạn hiện tại
 
 - **Trình duyệt:** ghi âm và nhận dạng giọng nói chạy tốt nhất trên **Google Chrome**, và cần cấp quyền micro. Giọng đọc (TTS) phụ thuộc vào các giọng có sẵn trên hệ điều hành.
-- **Tính năng AI** (tạo bài học, AI gợi ý, chữa câu) đang gọi thẳng `https://api.anthropic.com/v1/messages` từ trình duyệt mà **không gửi API key**. Cách này chỉ chạy được trong môi trường Claude Artifact. Khi chạy bằng `npm run dev`, các tính năng AI sẽ báo lỗi. Muốn dùng được cần thêm một backend hoặc proxy giữ API key. Không đặt API key trong code chạy ở client.
+- **Tính năng AI** (tạo bài học, AI gợi ý, chữa câu): ở ngoài Claude Artifact, app gọi `/api/messages` và proxy sẽ thêm API key. Trong Claude Artifact, app vẫn gọi thẳng API. Proxy **chưa có đăng nhập và chưa giới hạn tần suất**: ai mở được trang thì cũng dùng được key của bạn. Vì vậy chỉ nên chạy ở máy cá nhân hoặc đặt sau một lớp xác thực khi deploy công khai.
 - **Lưu dữ liệu:** trong Claude Artifact, ứng dụng dùng `window.storage`. Ở trình duyệt thường, ứng dụng tự chuyển sang `localStorage`, nên dữ liệu chỉ nằm trên trình duyệt đó và mất nếu bạn xoá dữ liệu trang.
 - **Điểm phát âm** chỉ cho biết máy nhận dạng được bao nhiêu từ, đúng thứ tự. Bộ nhận dạng giọng nói của Chrome có tự đoán từ theo ngữ cảnh, nên điểm này **không chấm ngữ điệu hay trọng âm**. Hãy kết hợp với việc nghe lại ghi âm của mình.
 - **Nội dung do AI tạo** (nghĩa, IPA, collocation, câu ví dụ) chưa có bước kiểm duyệt. Nếu thấy nghi ngờ, hãy tra lại từ điển như Cambridge hoặc Oxford.
