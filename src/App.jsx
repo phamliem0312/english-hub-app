@@ -44,7 +44,7 @@ export default function App() {
 
   return (
     <div className="shell">
-      <Sidebar page={route.page} go={go} badges={{ phrases: due.length }} week={week} daysDone={data.daysDone} />
+      <Sidebar page={route.page} go={go} badges={{ phrases: due.length }} week={week} data={data} />
       <main className="main" key={route.page + (route.date || '')}>
         {route.page === 'home' && <TodayPage {...ctx} date={route.date || today} />}
         {route.page === 'toc' && <ContentsPage {...ctx} />}

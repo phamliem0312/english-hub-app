@@ -14,7 +14,7 @@ export default function Reader({ text, words, reader, onSave }) {
   });
 
   return (
-    <div className="card">
+    <div className="card tone-blue toned">
       <div className="reader-text">{out}</div>
       <p className="small muted" style={{ marginTop: 10 }}>Nhấn vào một từ để nghe riêng.</p>
       {onSave && (

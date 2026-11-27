@@ -29,7 +29,7 @@ export default function SpeechCheck({ text, topic, lang, setLang, onShadow }) {
   }
 
   return (
-    <div className="card">
+    <div className="card tone-teal toned">
       <div className="row between" style={{ marginBottom: 12 }}>
         <p className="small dim grow">{text ? 'Đọc to đoạn mẫu — máy so khớp với bài gốc và chấm điểm.' : 'Nói về chủ đề — máy chép lại lời bạn, rồi AI nhận xét và sửa lỗi.'}</p>
         <select className="field" style={{ fontSize: 13, padding: '6px 30px 6px 10px' }} value={lang} onChange={(e) => setLang(e.target.value)} aria-label="Giọng nhận dạng">

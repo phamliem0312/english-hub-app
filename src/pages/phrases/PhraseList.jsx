@@ -8,8 +8,8 @@ export default function PhraseList({ phrases, onDelete }) {
   return (
     <ul className="phrase-list">
       {phrases.slice().reverse().map((p) => (
-        <li key={p.id}>
-          <div className="grow">
+        <li key={p.id} className={p.mastered ? 'tone-ok' : isDue(p) ? 'tone-accent' : 'tone-blue'}>
+          <span className="phrase-mark" aria-hidden="true" /><div className="grow">
             <div className="phrase-text">{p.text}</div>
             {p.note && <div className="small dim">{p.note}</div>}
             <div className="row small muted" style={{ marginTop: 4 }}>

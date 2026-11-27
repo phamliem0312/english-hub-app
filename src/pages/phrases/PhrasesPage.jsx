@@ -1,6 +1,7 @@
 import { useState } from "react";
 import PageHeader from "../../components/ui/PageHeader";
 import Section from "../../components/ui/Section";
+import Icon from "../../components/ui/Icon";
 import ReviewSession from "./ReviewSession";
 import PhraseForm from "./PhraseForm";
 import PhraseList from "./PhraseList";
@@ -19,15 +20,15 @@ export default function PhrasesPage({ data, due, autoReview }) {
       <ReviewSession cards={session} onGrade={data.gradePhrase} onExit={() => setSession(null)} />
     ) : (<>
       {due.length > 0 && (
-        <div className="note ok row between">
-          <div><div className="h3">{due.length} cụm đến hạn ôn</div><p className="small dim">Mất khoảng {Math.max(1, Math.round(due.length / 3))} phút.</p></div>
+        <div className="callout tone-ok" style={{ alignItems: 'center' }}>
+          <span className="icon-badge lg"><Icon name="repeat" size={19} /></span><div className="grow"><div className="h3">{due.length} cụm đến hạn ôn</div><p className="small dim">Mất khoảng {Math.max(1, Math.round(due.length / 3))} phút.</p></div>
           <button className="btn btn-primary" onClick={() => setSession(due)}>Ôn ngay</button>
         </div>
       )}
-      <Section title="Thêm cụm từ">
+      <Section icon="plus" tone="ok" title="Thêm cụm từ">
         <PhraseForm addPhrases={data.addPhrases} />
       </Section>
-      <Section title="Kho cụm từ" meta={data.phrases.length > 0 && `${data.phrases.filter((p) => p.mastered).length} thành thạo`}>
+      <Section icon="phrases" tone="plum" title="Kho cụm từ" meta={data.phrases.length > 0 && `${data.phrases.filter((p) => p.mastered).length} thành thạo`}>
         {data.phrases.length > 0
           ? <PhraseList phrases={data.phrases} onDelete={data.deletePhrase} />
           : <p className="dim">Kho đang trống. Mỗi khi nghe thấy một cụm hay (ví dụ <i className="serif">“Could you say that again?”</i>), lưu lại ở trên — hoặc bắt đầu nhanh với 12 mẫu câu tình huống IT.</p>}

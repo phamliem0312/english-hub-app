@@ -23,7 +23,7 @@ export default function ReviewSession({ cards, onGrade, onExit }) {
     </div>
     <Progress value={qi / cards.length * 100} label="Tiến độ ôn" />
 
-    <div className="flash">
+    <div className={`flash ${front ? 'front' : 'back'}`}>
       {front ? (<>
         <div className="flash-hint">Nói bằng tiếng Anh</div>
         <div className="flash-main accent">{card.note}</div>

@@ -28,34 +28,34 @@ export default function SpeakPage({ data, week, today, sample }) {
       Đừng đợi giỏi mới bắt đầu nói. Mỗi ngày chọn một chủ đề và ghi âm 1–3 phút, hoặc shadowing theo một đoạn mẫu.
     </PageHeader>
 
-    <Section title="Chọn nội dung">
+    <Section icon="contents" tone="plum" title="Chọn nội dung">
       <ContentPicker sel={sel} week={week} W={W} custom={custom} setCustom={setCustom} choose={choose} />
     </Section>
 
     {sel === 'week' && (
-      <Section title="Đề nói" meta="1–3 phút">
-        <p className="prompt">{W.prompt}</p>
+      <Section icon="chat" title="Đề nói" meta="1–3 phút">
+        <blockquote className="prompt">{W.prompt}</blockquote>
         <p className="footnote">Cần bài mẫu? Chọn <i>{SAMPLES[0].title}</i> ở trên, nghe vài lần rồi nói phiên bản của bạn.</p>
       </Section>
     )}
 
     {words.length > 0 && (
-      <Section title="Nghe mẫu">
+      <Section icon="volume" tone="blue" title="Nghe mẫu">
         <Reader text={text} words={words} reader={reader}
           onSave={sel !== 'custom' && sel !== SAMPLES[0].id ? () => data.addPhrases(text.split('\n').map((t) => ({ text: t }))) : null} />
       </Section>
     )}
 
-    <Section title="Ghi âm">
+    <Section icon="mic" title="Ghi âm">
       <Recorder week={week} today={today} hasModel={!!text} playModel={() => reader.play(text, words)} stopModel={reader.stop} />
     </Section>
 
-    <Section title="Nhận dạng giọng nói">
+    <Section icon="wave" tone="teal" title="Nhận dạng giọng nói">
       <SpeechCheck key={sel + '|' + text} text={text} topic={topic} lang={sttLang} setLang={setSttLang}
         onShadow={(t) => { setCustom(t); choose('custom', t); }} />
     </Section>
 
-    <Section title="Luyện hội thoại với ChatGPT Voice">
+    <Section icon="chat" tone="plum" title="Luyện hội thoại với ChatGPT Voice">
       <RoleplayCard topic={topic} />
     </Section>
 

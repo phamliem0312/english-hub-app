@@ -3,7 +3,7 @@ import Icon from "./Icon";
 // Nút bật/tắt micro dùng chung cho mọi phần nói.
 export default function MicButton({ listening, onClick, disabled, children = 'Trả lời bằng giọng nói', className = '' }) {
   return (
-    <button className={`btn btn-block ${listening ? 'btn-accent' : 'btn-primary'} ${className}`} onClick={onClick} disabled={disabled}>
+    <button className={`btn btn-block ${listening ? 'btn-dark' : 'btn-primary'} ${className}`} onClick={onClick} disabled={disabled}>
       {listening ? <><span className="live-dot pulse" /> Dừng</> : <><Icon name="mic" /> {children}</>}
     </button>
   );

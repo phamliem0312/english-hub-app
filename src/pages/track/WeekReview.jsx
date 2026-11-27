@@ -1,6 +1,7 @@
 import { CRITERIA, WEEKS } from "../../lib/learning";
 import Icon from "../../components/ui/Icon";
 import Tag from "../../components/ui/Tag";
+import { SKILL_TONE } from "../../lib/format";
 
 // Một tuần: tự chấm 5 tiêu chí, ghi chú, nghe bản ghi Chủ nhật cạnh tuần trước.
 export default function WeekReview({ w, current, open, onToggle, data, recs }) {
@@ -15,8 +16,8 @@ export default function WeekReview({ w, current, open, onToggle, data, recs }) {
       {open && (
         <div className="review-body">
           {CRITERIA.map((c) => (
-            <div key={c.id} className="criterion">
-              <div className="grow"><div style={{ fontWeight: 600 }}>{c.name}</div><div className="small muted">{c.goal}</div></div>
+            <div key={c.id} className={`criterion tone-${SKILL_TONE[c.id]}`}>
+              <div className="grow"><div className="row nowrap" style={{ fontWeight: 600 }}><span className="dot" />{c.name}</div><div className="small muted">{c.goal}</div></div>
               <div className="rate" role="group" aria-label={c.name}>
                 {[1, 2, 3, 4, 5].map((v) => <button key={v} className={entry.r[c.id] === v ? 'on' : ''} onClick={() => data.setRating(w, c.id, v)} aria-pressed={entry.r[c.id] === v}>{v}</button>)}
               </div>

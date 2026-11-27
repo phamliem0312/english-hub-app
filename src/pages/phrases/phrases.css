@@ -1,10 +1,13 @@
 .flash { display: flex; flex-direction: column; align-items: center; justify-content: center; min-height: 260px; margin: 20px 0 16px; padding: 32px 24px; border: 1px solid var(--rule); border-radius: 14px; background: var(--surface); text-align: center; }
-.flash-hint { margin-bottom: 14px; font-size: 12.5px; font-weight: 600; color: var(--muted); }
+.flash.front { border-color: transparent; background: var(--ok-soft); }
+.flash.back { border-top: 4px solid var(--ok); }
+.flash-hint { margin-bottom: 14px; padding: 3px 10px; border-radius: 999px; background: var(--surface); font-size: 12.5px; font-weight: 600; color: var(--ok); }
 .flash-main { max-width: 32ch; margin-bottom: 8px; font-family: var(--serif); font-size: 30px; line-height: 1.3; letter-spacing: -.015em; }
-.flash-main.accent { color: var(--accent); }
+.flash-main.accent { color: var(--ok); }
 
 .phrase-form { display: grid; gap: 8px; }
 .phrase-list { list-style: none; padding: 0; }
 .phrase-list li { display: flex; align-items: flex-start; gap: 12px; padding: 14px 0; border-top: 1px solid var(--rule); }
 .phrase-list li:first-child { border-top: 0; padding-top: 4px; }
+.phrase-mark { flex-shrink: 0; width: 4px; align-self: stretch; border-radius: 2px; background: var(--tone); }
 .phrase-text { font-family: var(--serif); font-size: 18px; line-height: 1.4; }

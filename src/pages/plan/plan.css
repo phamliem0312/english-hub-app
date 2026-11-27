@@ -1,14 +1,22 @@
-.phases { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 28px; }
-.phase { padding-top: 14px; border-top: 3px solid var(--rule); }
-.phase.current { border-top-color: var(--accent); }
-.phase-name { margin: 10px 0 10px; font-family: var(--serif); font-size: 20px; font-weight: 500; }
-@media (max-width: 760px) { .phases { grid-template-columns: 1fr; gap: 20px; } }
+.phases { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 12px; }
+.phase { padding: 20px; border-radius: 14px; background: var(--surface); border: 1px solid var(--rule); border-top: 4px solid var(--tone); }
+.phase.current { background: var(--tone-soft); border-color: transparent; border-top-color: var(--tone); }
+.phase-tag { background: var(--tone-soft); color: var(--tone); }
+.phase.current .phase-tag { background: var(--tone); color: var(--surface); }
+.phase-name { display: flex; align-items: center; gap: 10px; margin: 12px 0 10px; font-family: var(--serif); font-size: 20px; font-weight: 500; }
+.phase-num { display: grid; place-items: center; width: 28px; height: 28px; border-radius: 50%; background: var(--tone); color: var(--surface); font-size: 15px; }
+@media (max-width: 760px) { .phases { grid-template-columns: 1fr; } }
 
-.split { display: grid; gap: 16px; margin-top: 28px; }
+.split { display: grid; gap: 16px; margin-top: 28px; padding: 20px 22px; border-radius: 14px; background: var(--surface); border: 1px solid var(--rule); }
+.split .progress { height: 8px; border-radius: 4px; }
 
-.resource { display: flex; flex-direction: column; }
+.resource { display: flex; flex-direction: column; border-top: 4px solid var(--tone); }
 .resource .list { flex: 1; }
+.resource .link { color: var(--tone); }
+.res-tag { background: var(--tone-soft); color: var(--tone); }
 
+.week-chip { display: inline-grid; place-items: center; width: 26px; height: 26px; border-radius: 7px; background: var(--tone-soft); color: var(--tone); font-size: 13px; font-weight: 600; }
+.table tr.current .week-chip { background: var(--tone); color: var(--surface); }
 .table tr.clickable { cursor: pointer; }
 .table tr.clickable:hover td { background: var(--sunken); }
 .row-toggle { all: unset; cursor: pointer; }

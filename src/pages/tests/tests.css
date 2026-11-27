@@ -16,8 +16,11 @@
 
 .timer { font-family: var(--serif); font-size: 22px; font-variant-numeric: tabular-nums; }
 
-.result { padding: 36px 0 8px; text-align: center; }
-.result-score { margin-bottom: 8px; font-family: var(--serif); font-size: 84px; line-height: 1; letter-spacing: -.04em; }
+.result { display: flex; flex-direction: column; align-items: center; padding: 24px 0 8px; text-align: center; }
+.result .ring { color: var(--tone); }
+.result-score { font-family: var(--serif); font-size: 60px; line-height: 1; letter-spacing: -.04em; color: var(--ink); }
+.result-score small { font-size: 26px; color: var(--muted); }
+.q-num { color: var(--accent); }
 
 .actions { display: grid; grid-template-columns: 1fr 2fr; gap: 8px; margin-top: 16px; }
 .quit { display: block; margin: 28px auto 0; }

@@ -25,14 +25,14 @@ export default function Recorder({ week, today, hasModel, playModel, stopModel }
   }
 
   return (
-    <div className="card">
+    <div className="card tone-accent toned">
       <div className="row between" style={{ marginBottom: 12 }}>
         <span className="small muted">Mục tiêu 1–3 phút</span>
         {recording && <span className={`tag ${secs >= 60 ? 'ok' : 'bad'}`}><span className="live-dot pulse" /> {mmss(secs)}</span>}
         {state === 'done' && <Tag tone="ok"><Icon name="check" size={12} /> {mmss(secs)}</Tag>}
       </div>
       <canvas ref={canvasRef} height="64" className="wave" />
-      <button className={`btn btn-block btn-lg ${recording ? 'btn-accent' : 'btn-primary'}`} onClick={toggle}>
+      <button className={`btn btn-block btn-lg ${recording ? 'btn-dark' : 'btn-primary'}`} onClick={toggle}>
         {recording ? <><Icon name="stop" size={14} /> Dừng ghi âm</> : <><Icon name="mic" /> Bắt đầu ghi âm</>}
       </button>
 

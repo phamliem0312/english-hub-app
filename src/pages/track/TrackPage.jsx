@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import { PHASES, WEEKS, PASS } from "../../lib/learning";
 import { getRec } from "../../lib/storage";
-import { dmy } from "../../lib/format";
+import { dmy, phaseTone } from "../../lib/format";
 import PageHeader from "../../components/ui/PageHeader";
 import Section from "../../components/ui/Section";
 import Tag from "../../components/ui/Tag";
@@ -31,14 +31,14 @@ export default function TrackPage({ data, week, go, startPhase, openWeek: initia
       Cuối mỗi tuần tự chấm 5 tiêu chí (1 = chưa đạt, 5 = đạt mục tiêu). Mỗi Chủ nhật ghi âm lại cùng một chủ đề và nghe so sánh với tuần trước.
     </PageHeader>
 
-    <Section title="Đánh giá cuối giai đoạn" meta={`đạt từ ${PASS}%`}>
+    <Section icon="flag" title="Đánh giá cuối giai đoạn" meta={`đạt từ ${PASS}%`}>
       <div className="divided">
         {PHASES.map((p) => {
           const tries = data.phaseRes[p.n] || []; const best = data.bestPhase(p.n);
           return (
             <div key={p.n} className="row between phase-row">
               <div className="grow">
-                <div className="row"><span className="h3">Giai đoạn {p.n} · {p.name}</span><Tag>{p.level}</Tag>
+                <div className="row"><span className={`icon-badge tone-${phaseTone(p.n)}`} style={{ width: 26, height: 26, fontSize: 13, fontWeight: 600 }}>{p.n}</span><span className="h3">{p.name}</span><Tag>{p.level}</Tag>
                   {best != null && <Tag tone={best >= PASS ? 'ok' : 'warn'}>{best >= PASS ? 'đạt' : 'chưa đạt'} · {best}%</Tag>}</div>
                 <div className="small muted" style={{ marginTop: 2 }}>
                   {tries.length ? tries.slice(-4).map((t) => `${dmy(t.date).slice(0, 5)}: ${t.total ?? '—'}%${t.level ? ` (${t.level})` : ''}`).join(' · ') : `Nên làm vào cuối tuần ${p.weeks[1]}.`}
@@ -51,11 +51,11 @@ export default function TrackPage({ data, week, go, startPhase, openWeek: initia
       </div>
     </Section>
 
-    <Section title="Điểm tự chấm theo tuần">
+    <Section icon="track" tone="blue" title="Điểm tự chấm theo tuần">
       <CriteriaTable data={data} week={week} />
     </Section>
 
-    <Section title="Chấm từng tuần">
+    <Section icon="check" tone="teal" title="Chấm từng tuần">
       {Array.from({ length: week }, (_, i) => week - i).map((w) => (
         <WeekReview key={w} w={w} current={w === week} open={openWeek === w} onToggle={() => setOpenWeek(openWeek === w ? 0 : w)} data={data} recs={recs} />
       ))}
