@@ -1,128 +1,89 @@
-# 📖 English Hub
+# 🎧 English Hub
 
-Ứng dụng tự học tiếng Anh cho người làm IT đang luyện thi **IELTS** (mục tiêu band 6.5–7). Mọi thứ nằm trong một màn hình:
+Ứng dụng tự học **luyện nghe – nói tiếng Anh trong 12 tuần** cho người làm IT có nền tảng cơ bản, mỗi ngày khoảng **1 giờ**.
 
-- Học từ vựng có AI hỗ trợ
-- Ôn tập ngắt quãng (spaced repetition)
-- Tự đặt câu và được AI chữa lỗi
-- Luyện phát âm: nghe giọng mẫu, ghi âm, máy nhận dạng giọng nói và chấm điểm
-
-Mỗi ngày chỉ cần 20–30 phút: **ôn các từ đến hạn → học 5 từ mới → tự đặt câu → luyện phát âm**.
+Mục tiêu không phải học thật nhiều ngữ pháp hay từ vựng, mà là nghe hiểu người khác nói, phản xạ trả lời và tự tin giao tiếp trong công việc.
 
 ---
 
-## ✨ Tính năng
+## Lộ trình
 
-### 1. Tổng quan (Dashboard)
-- Thống kê: tổng số từ, số từ đã thành thạo, số từ cần ôn, số ngày đã học.
-- Nhắc ôn tập khi có từ đến hạn.
-- Gợi ý bài học tiếp theo trong lộ trình 30 ngày.
+| Giai đoạn | Tuần | Trình độ | Mục tiêu |
+|---|---|---|---|
+| 1 · Nền tảng | 1–4 | A1–A2 | Nghe hội thoại ngắn, làm quen phát âm, giới thiệu bản thân, câu giao tiếp đơn giản |
+| 2 · Phản xạ | 5–8 | A2–B1 | Nghe hội thoại thông thường, nói về công việc và quan điểm, hỏi đáp tự nhiên, duy trì hội thoại ~5 phút |
+| 3 · Ứng dụng | 9–12 | Hướng đến B1 | Nghe ý chính cuộc họp, báo cáo tiến độ, trao đổi với khách hàng, giải thích vấn đề kỹ thuật |
 
-### 2. Học từ mới
-Có 3 cách chọn từ, mỗi bài tối đa **5 từ**:
-- **Bộ từ gợi ý** theo lộ trình.
-- **AI gợi ý**: AI đề xuất 5 từ mới phục vụ IELTS Writing Task 2 hoặc Speaking, không trùng với các từ đã học và không phải thuật ngữ IT cơ bản.
-- **Tự nhập**: mỗi từ một dòng, hoặc ngăn cách bằng dấu phẩy.
+Đây là các mốc mục tiêu luyện tập, không phải cam kết đạt chứng chỉ CEFR sau đúng 12 tuần.
 
-Với mỗi từ, AI tạo ra:
-- Nghĩa tiếng Việt. Nếu từ có 2 nghĩa thông dụng thì ghi cả hai, ví dụ *address*: giải quyết / địa chỉ.
-- Từ loại và phiên âm IPA.
-- **2–3 collocation** hay dùng trong IELTS, ví dụ *address an issue*.
-- **1 câu ví dụ** theo văn phong IELTS.
+**Chủ đề 12 tuần:** Greetings · Daily Activities · Family & Hobbies · Work · Communication · Opinions · Problem Solving · Meetings · IT Vocabulary · Technical Discussion · Project Updates · Client Communication.
 
-AI cũng viết thêm một câu chuyện hoặc đoạn hội thoại 7–9 câu dùng đủ cả 5 từ, kèm bản dịch tiếng Việt.
+**Lịch cố định mỗi ngày (60 phút):** Phát âm 10' → Listening 20' → Shadowing 15' → Speaking 10' → Vocabulary 5'.
 
-### 3. Lộ trình 30 ngày (150 từ, không trùng)
-| Ngày | Nội dung |
-|---|---|
-| 1–7 | Công nghệ, việc làm, làm việc nhóm, cảm xúc, phát triển bản thân, tư duy |
-| 8–20 | Các chủ đề hay ra trong Writing Task 2: giáo dục, môi trường, sức khoẻ, đô thị hoá, tội phạm, chính phủ, toàn cầu hoá, truyền thông, gia đình, phim ảnh |
-| 21–22 | Task 1: mô tả xu hướng, mức độ và so sánh |
-| 23–27 | Task 2: nguyên nhân và hệ quả, vấn đề và giải pháp, đối lập và nhượng bộ, nêu quan điểm, phản biện |
-| 28–30 | Từ vựng học thuật (Academic Word List) |
-
-Một ngày được tính là xong khi cả 5 từ của ngày đó đã có trong kho từ, dù bạn học chúng từ trang nào. Nhấn vào một ngày để xem trước các từ và học ngay.
-
-### 4. Ôn tập (Flashcard + Spaced repetition)
-- **Thẻ nhận diện** (dùng cho lần ôn đầu tiên): hiện từ tiếng Anh, bạn nhớ lại nghĩa rồi lật thẻ.
-- **Thẻ nhớ lại** (từ lần ôn thứ 2 trở đi): hiện nghĩa tiếng Việt và câu ví dụ đã che từ cần nhớ, bạn **gõ từ tiếng Anh** rồi bấm Kiểm tra. Kiểu thẻ này luyện đúng kỹ năng cần cho Speaking và Writing: từ ý nghĩ phải nói ra được từ.
-- Mặt sau thẻ có IPA, collocation, câu ví dụ, và cho biết bạn gõ đúng hay sai.
-- **Đã nhớ:** lần ôn tiếp theo giãn dần theo chu kỳ **1 → 3 → 7 → 14 → 30 ngày**. Sau 5 lần nhớ, từ được tính là **thành thạo**. Từ thành thạo vẫn được **kiểm tra lại sau 90 ngày**.
-- **Chưa nhớ:** từ quay về bậc đầu và sẽ được ôn lại vào ngày mai. Nếu là từ đã thành thạo thì cũng mất trạng thái thành thạo.
-
-### 5. Bài học
-- Xem lại 8 bài gần nhất: từ vựng, IPA, nghĩa, collocation, câu ví dụ, và nút 🔊 để nghe phát âm.
-- Câu chuyện có nút **Nghe** (đọc bằng giọng máy) và **Luyện đọc** (chuyển câu chuyện sang trang luyện phát âm).
-- **Tự đặt câu:** viết 1 câu cho mỗi từ. AI kiểm tra ngữ pháp, cách chọn từ và collocation, đưa ra câu đã sửa kèm giải thích bằng tiếng Việt.
-
-### 6. Luyện phát âm
-- **Đoạn luyện:** 5 đoạn mẫu có sẵn (giới thiệu bản thân, phỏng vấn IT, thuyết trình dự án, IELTS Speaking Part 2, các câu "cứu nguy" khi bí từ). Bạn cũng có thể luyện bằng câu chuyện trong bài học.
-- **Nghe mẫu:** chọn giọng đọc, chỉnh tốc độ từ 0.5× đến 1.5×. Từ đang được đọc sẽ được tô sáng. Nhấn vào một từ bất kỳ để nghe riêng từ đó.
-- **Ghi âm (shadowing):** có sóng âm hiển thị trực tiếp, mỗi lần ghi tối đa 5 phút. Sau khi ghi, bạn nghe xen kẽ **giọng mẫu** và **giọng của mình** để so sánh.
-- **Nhận dạng & chấm điểm:** máy so lời bạn đọc với đoạn gốc **theo đúng thứ tự từ**.
-  - Điểm = số từ trong đoạn gốc được đọc đúng chia cho tổng số từ của đoạn gốc. Đọc thiếu thì bị trừ điểm, nói thừa từ cũng không được cộng điểm.
-  - Từ khớp tô xanh, từ sai hoặc thừa tô đỏ, kèm danh sách các từ bị thiếu hoặc đọc chưa rõ.
-  - Có thể chọn nhận dạng giọng Anh-Mỹ, Anh-Anh hoặc Anh-Úc.
-
-### 7. Kho từ vựng
-- Danh sách mọi từ đã học, kèm trạng thái (thành thạo / cần ôn), số lần đã ôn và ngày ôn tiếp theo.
-- Nút **Xoá toàn bộ dữ liệu** (có hỏi xác nhận, không thể hoàn tác).
-
-Giao diện dùng nền tối. Trên máy tính, điều hướng nằm ở sidebar. Trên điện thoại, nó chuyển xuống thanh dưới màn hình.
+**Tỷ lệ thời gian:** 60% nghe – nói giao tiếp thông thường · 25% phát âm, ngữ điệu, phản xạ · 15% tiếng Anh chuyên ngành IT.
 
 ---
 
-## 🚀 Cài đặt & chạy
+## Tính năng
 
-Yêu cầu: **Node.js 20.19+** (Vite 8 cần tối thiểu bản này).
+- **Hôm nay:** tự tính tuần/ngày học từ ngày bắt đầu. Checklist 5 khối học của ngày kèm link tài liệu (tuần 1–4: VOA Let's Learn English, tuần 5–8: British Council, tuần 9–12: BBC), thanh tiến độ, nút đặt lại tiến độ ngày. Ngày 1 là lịch *Getting Started* (kiểm tra trình độ → VOA Lesson 1 → shadowing → tự giới thiệu → ôn cụm từ). Nhắc phương pháp nghe 4 bước. Chủ nhật nhắc ghi âm so sánh.
+- **Mục lục:** 84 ngày xếp theo 3 giai đoạn và 12 tuần. Mỗi ngày hiện trạng thái (✓ xong, số khối đã làm, viền vàng là hôm nay), mỗi tuần hiện số ngày đã xong và đã tự chấm hay chưa. Nhấn vào một ngày để mở checklist của ngày đó và đánh dấu bù cho ngày đã qua. Ngày tương lai chỉ xem trước được. Ở trang Hôm nay có nút ‹ ngày trước / ngày sau ›.
+- **Lộ trình 12 tuần:** mục tiêu 3 giai đoạn, lịch 1 giờ, tỷ lệ thời gian, 4 nguồn tài liệu miễn phí, bảng 12 tuần (nhấn để xem đề luyện nói). Có thể đổi ngày bắt đầu.
+- **Luyện nói:**
+  - Đề nói của tuần (nói tự do 1–3 phút), bài mẫu *Introduce yourself*, 3 tình huống IT (báo cáo tiến độ, khi chưa hiểu, họp đối tác), hoặc dán transcript bất kỳ để shadowing.
+  - Nghe giọng mẫu (chọn giọng, tốc độ 0.5–1.5×, tô sáng từ đang đọc, nhấn từ để nghe riêng).
+  - Ghi âm có sóng âm, nghe xen kẽ giọng mẫu / giọng mình, tự kiểm tra 3 câu hỏi, **lưu làm bản ghi tuần** hoặc tải về.
+  - Nhận dạng giọng nói: với đoạn mẫu thì chấm điểm theo thứ tự từ; với nói tự do thì **AI nhận xét, sửa lỗi** và đưa ra phiên bản tốt hơn để shadowing tiếp.
+  - Lời nhắn sẵn để luyện hội thoại với ChatGPT Voice (AI đóng vai đồng nghiệp/đối tác, nói ở A2, sửa lỗi sau mỗi lượt).
+- **Cụm từ:** lưu cụm hay gặp (kèm nghĩa tuỳ chọn), thêm nhanh 12 mẫu câu IT, ôn ngắt quãng 1 → 3 → 7 → 14 → 30 ngày, thành thạo thì kiểm tra lại sau 90 ngày.
+- **Kiểm tra cuối ngày** (khoảng 5 phút, ở trang Hôm nay):
+  - Nghe – chép: 3 câu theo chủ đề tuần, chấm tự động.
+  - Phản xạ: nghe 2 câu hỏi rồi trả lời bằng giọng nói, AI chấm và gợi ý câu trả lời mẫu.
+  - Điểm hiện ở ô ngày trong Mục lục và thành điểm trung bình tuần ở trang Theo dõi.
+  - Không có AI thì phần phản xạ được bỏ qua.
+- **Đánh giá cuối giai đoạn** (tuần 4, 8, 12, khoảng 15 phút), gồm 4 phần:
+  - Nghe hiểu: AI tạo hội thoại theo trình độ, nghe tối đa 2 lần, trả lời 5 câu trắc nghiệm. Không có AI thì dùng bài soạn sẵn.
+  - Shadowing: đọc to một đoạn, chấm % từ đọc đúng.
+  - Nói 2 phút: AI chấm trôi chảy / từ vựng / ngữ pháp / truyền đạt ý và ước lượng trình độ.
+  - Nhớ cụm từ: nhìn câu tiếng Việt, nói ra câu tiếng Anh.
+  - Đạt từ 70%. Khi chưa đạt, app chỉ ra phần yếu kèm gợi ý ôn, và trang Hôm nay tiếp tục nhắc làm lại. Mọi lần làm đều được lưu.
+- **Theo dõi tuần:** tự chấm 5 tiêu chí (Listening, Pronunciation, Speaking, Vocabulary, Reflex) thang 1–5, ghi chú, nghe bản ghi Chủ nhật của tuần này cạnh tuần trước.
 
-Các tính năng AI cần API key của Anthropic. Tạo file `.env` ở thư mục gốc (file này đã nằm trong `.gitignore`):
+---
+
+## Cài đặt & chạy
+
+Yêu cầu: **Node.js 20.19+**.
+
+Tính năng *AI nhận xét* cần API key Anthropic. Tạo file `.env` (đã có trong `.gitignore`):
 
 ```
 ANTHROPIC_API_KEY=sk-ant-...
-# AI_MODEL=claude-sonnet-4-6   (tuỳ chọn, mặc định là model này)
+# AI_MODEL=claude-sonnet-4-6   (tuỳ chọn)
 ```
 
 ```bash
 npm install
-npm run dev       # dev server tại http://localhost:5173 (đã có sẵn /api/messages)
-npm run build     # build production vào thư mục dist/
-npm start         # chạy bản production: phục vụ dist/ + /api/messages tại http://127.0.0.1:3000
-npm run preview   # xem thử bản build bằng Vite
-npm run lint      # kiểm tra code bằng ESLint
-npm test          # chạy unit test (dùng node:test có sẵn, không cần cài thêm gì)
+npm run dev       # http://localhost:5173 (đã có /api/messages)
+npm run build     # build vào dist/
+npm start         # phục vụ dist/ + /api/messages tại http://127.0.0.1:3000 (nhận PORT, HOST)
+npm run lint
+npm test          # unit test bằng node:test
 ```
 
-`npm start` nhận thêm các biến `PORT` và `HOST`. Khi deploy lên server, đặt `HOST=0.0.0.0`.
-
-Công nghệ: React 19 + Vite, không dùng thư viện UI nào khác.
-- [src/pages/EnglishHub.jsx](src/pages/EnglishHub.jsx): giao diện, các lời gọi AI, TTS, ghi âm, nhận dạng giọng nói.
-- [src/pages/learning.js](src/pages/learning.js): phần logic thuần (lịch ôn tập, chấm điểm đọc, lộ trình) để test được.
-- [src/pages/learning.test.js](src/pages/learning.test.js): test cho phần logic trên.
-- [server/ai-proxy.js](server/ai-proxy.js): proxy gọi Claude bằng SDK chính thức. API key chỉ nằm ở server. Model và `max_tokens` do server quyết định, client chỉ gửi được tin nhắn văn bản.
-- [server.js](server.js): server production (dùng sẵn `node:http`, không cần Express).
+Cấu trúc:
+- [src/pages/EnglishHub.jsx](src/pages/EnglishHub.jsx): giao diện, TTS, ghi âm, nhận dạng giọng nói, lưu trữ.
+- [src/pages/learning.js](src/pages/learning.js): nội dung lộ trình và logic thuần (tính ngày/tuần, lịch ngày, ôn ngắt quãng, chấm shadowing).
+- [src/pages/learning.test.js](src/pages/learning.test.js): test cho phần logic.
+- [server/ai-proxy.js](server/ai-proxy.js): proxy gọi Claude, API key chỉ nằm ở server.
+- [server.js](server.js): server production bằng `node:http`.
 
 ---
 
-## 🧭 Hướng dẫn sử dụng nhanh
+## Lưu ý
 
-1. Mở **Tổng quan**. Nếu có từ đến hạn, nhấn **Ôn tập ngay** trước. Với thẻ nhớ lại, hãy gõ từ trước rồi mới xem đáp án.
-2. Vào **Học từ mới** và chọn bộ từ gợi ý, nhấn **AI gợi ý**, hoặc tự nhập từ. Sau đó nhấn **Tạo bài học với AI**.
-3. Đọc nghĩa, collocation và câu chuyện. Nhấn 🔊 để nghe phát âm.
-4. Ở mục **Tự đặt câu**, viết 1 câu cho mỗi từ rồi nhấn **AI chữa câu**.
-5. Nhấn **Luyện đọc** để mang câu chuyện sang trang luyện phát âm:
-   - **Phát** để nghe giọng mẫu.
-   - **Bắt đầu ghi âm**, đọc theo, rồi so sánh với giọng mẫu.
-   - **Bắt đầu nhận dạng**, đọc to cả đoạn, rồi xem điểm và các từ bị thiếu.
-6. Hôm sau quay lại và lặp lại. Ôn tập luôn làm trước khi học từ mới.
-
----
-
-## ⚠️ Lưu ý & giới hạn hiện tại
-
-- **Trình duyệt:** ghi âm và nhận dạng giọng nói chạy tốt nhất trên **Google Chrome**, và cần cấp quyền micro. Giọng đọc (TTS) phụ thuộc vào các giọng có sẵn trên hệ điều hành.
-- **Tính năng AI** (tạo bài học, AI gợi ý, chữa câu): ở ngoài Claude Artifact, app gọi `/api/messages` và proxy sẽ thêm API key. Trong Claude Artifact, app vẫn gọi thẳng API. Proxy **chưa có đăng nhập và chưa giới hạn tần suất**: ai mở được trang thì cũng dùng được key của bạn. Vì vậy chỉ nên chạy ở máy cá nhân hoặc đặt sau một lớp xác thực khi deploy công khai.
-- **Lưu dữ liệu:** trong Claude Artifact, ứng dụng dùng `window.storage`. Ở trình duyệt thường, ứng dụng tự chuyển sang `localStorage`, nên dữ liệu chỉ nằm trên trình duyệt đó và mất nếu bạn xoá dữ liệu trang.
-- **Điểm phát âm** chỉ cho biết máy nhận dạng được bao nhiêu từ, đúng thứ tự. Bộ nhận dạng giọng nói của Chrome có tự đoán từ theo ngữ cảnh, nên điểm này **không chấm ngữ điệu hay trọng âm**. Hãy kết hợp với việc nghe lại ghi âm của mình.
-- **Nội dung do AI tạo** (nghĩa, IPA, collocation, câu ví dụ) chưa có bước kiểm duyệt. Nếu thấy nghi ngờ, hãy tra lại từ điển như Cambridge hoặc Oxford.
-- **Lộ trình đã đổi so với bản trước.** Nếu bạn đã có dữ liệu học từ bản cũ, các ngày cũ sẽ không được tính là xong theo lộ trình mới. Kho từ và lịch ôn tập không bị ảnh hưởng.
+- **Trình duyệt:** ghi âm và nhận dạng giọng nói chạy tốt nhất trên **Google Chrome**, cần quyền micro.
+- **Dữ liệu** lưu trong trình duyệt: tiến độ, cụm từ, đánh giá ở `localStorage` (hoặc `window.storage` trong Claude Artifact); bản ghi tuần ở IndexedDB. Xoá dữ liệu trang là mất. Dữ liệu của bản cũ (kho từ IELTS) không bị xoá nhưng không còn hiển thị.
+- **AI proxy chưa có đăng nhập và giới hạn tần suất**: chỉ chạy ở máy cá nhân hoặc đặt sau lớp xác thực khi deploy.
+- **Điểm shadowing** chỉ cho biết máy nhận ra bao nhiêu từ đúng thứ tự, không chấm ngữ điệu hay trọng âm.
+- Link tài liệu trỏ tới trang chính của từng khoá; nếu trang đổi địa chỉ, tìm theo tên khoá học.
