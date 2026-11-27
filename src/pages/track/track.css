@@ -1,0 +1,19 @@
+.phase-row { padding: 14px 0; }
+.divided > .phase-row:first-child { padding-top: 0; }
+
+.review { border-top: 1px solid var(--rule); }
+.section-head + .review { border-top: 0; }
+.review-head { display: flex; align-items: center; gap: 12px; width: 100%; padding: 16px 0; border: 0; background: none; text-align: left; cursor: pointer; }
+.review-head .week-num { display: block; font-family: var(--serif); font-size: 13px; color: var(--muted); }
+.review-head > svg { color: var(--muted); transition: transform .2s; }
+.review.open .review-head > svg { transform: rotate(180deg); }
+.review-body { padding: 0 0 22px; }
+.review-body audio { width: 100%; }
+
+.criterion { display: flex; align-items: center; gap: 12px; flex-wrap: wrap; padding: 10px 0; border-top: 1px solid var(--rule); }
+.rate { display: flex; gap: 4px; }
+.rate button { width: 34px; height: 34px; border: 1px solid var(--rule-2); border-radius: 8px; background: var(--surface); color: var(--ink-2); font-variant-numeric: tabular-nums; cursor: pointer; transition: background .15s, border-color .15s; }
+.rate button:hover { border-color: var(--ink-2); }
+.rate button.on { background: var(--ink); border-color: var(--ink); color: var(--paper); font-weight: 600; }
+
+.danger-zone { margin-top: 56px; padding-top: 20px; border-top: 1px solid var(--rule); text-align: center; }

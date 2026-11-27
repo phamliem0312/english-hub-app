@@ -1,0 +1,16 @@
+.phases { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 28px; }
+.phase { padding-top: 14px; border-top: 3px solid var(--rule); }
+.phase.current { border-top-color: var(--accent); }
+.phase-name { margin: 10px 0 10px; font-family: var(--serif); font-size: 20px; font-weight: 500; }
+@media (max-width: 760px) { .phases { grid-template-columns: 1fr; gap: 20px; } }
+
+.split { display: grid; gap: 16px; margin-top: 28px; }
+
+.resource { display: flex; flex-direction: column; }
+.resource .list { flex: 1; }
+
+.table tr.clickable { cursor: pointer; }
+.table tr.clickable:hover td { background: var(--sunken); }
+.row-toggle { all: unset; cursor: pointer; }
+.row-toggle:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+.table .prompt-row td { border-top: 0; padding-top: 0; color: var(--ink-2); }

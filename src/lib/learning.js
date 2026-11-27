@@ -11,6 +11,7 @@ const parse = (s) => { const [y, m, d] = s.split('-').map(Number); return new Da
 export const dayNumber = (start, today = todayStr()) => Math.max(1, Math.round((parse(today) - parse(start)) / 864e5) + 1);
 export const dateOfDay = (start, n) => { const d = parse(start); d.setDate(d.getDate() + n - 1); return ymd(d); };
 export const weekOf = (day) => Math.min(12, Math.ceil(day / 7));
+export const TOTAL_DAYS = 84;
 export const isSunday = (date = todayStr()) => parse(date).getDay() === 0;
 
 // ─── Spaced repetition (ôn cụm từ) ──────────────────────────────────────────

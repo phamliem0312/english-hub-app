@@ -1,5 +1,5 @@
 // Dùng chung cho các trang: đọc (TTS), gọi AI, nhận dạng giọng nói (STT).
-import { useState, useRef } from "react";
+import { useState, useRef, useEffect } from "react";
 
 // ─── TTS ───────────────────────────────────────────────────────────────────────
 const enVoices = () => ('speechSynthesis' in window ? speechSynthesis.getVoices().filter(v => v.lang.startsWith('en')) : []);
@@ -51,6 +51,7 @@ export function useStt(lang = 'en-US') {
   const [final, setFinal] = useState('');
   const ref = useRef(null);
   const detach = () => { if (ref.current) { ref.current.onend = ref.current.onresult = ref.current.onerror = null; ref.current.abort(); ref.current = null; } };
+  useEffect(() => detach, []); // rời trang khi đang nghe: tắt micro
   function start(onDone) {
     const SR = window.SpeechRecognition || window.webkitSpeechRecognition;
     if (!SR) { alert('Nhận dạng giọng nói chỉ chạy trên Google Chrome.'); return; }

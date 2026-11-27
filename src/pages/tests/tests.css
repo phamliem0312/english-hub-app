@@ -1,0 +1,23 @@
+.steps-bar { display: flex; gap: 6px; margin-top: 20px; }
+.steps-bar span { flex: 1; height: 3px; border-radius: 2px; background: var(--rule); }
+.steps-bar span.on { background: var(--accent); }
+
+.q-head { display: flex; align-items: center; gap: 8px; margin-bottom: 12px; }
+.q-num { margin-right: auto; font-family: var(--serif); font-size: 18px; }
+.q-text { font-family: var(--serif); font-size: 20px; line-height: 1.4; margin: 4px 0 8px; }
+.answer-key { margin-top: 12px; display: grid; gap: 8px; font-size: 14.5px; }
+
+.option { display: flex; align-items: center; gap: 12px; padding: 10px 12px; margin: 0 -12px; border-radius: 8px; font-size: 14.5px; cursor: pointer; }
+.option:hover { background: var(--sunken); }
+.option.disabled { cursor: default; }
+.option.disabled:hover { background: none; }
+.option.right { color: var(--ok); font-weight: 600; }
+.option.wrong { color: var(--bad); }
+
+.timer { font-family: var(--serif); font-size: 22px; font-variant-numeric: tabular-nums; }
+
+.result { padding: 36px 0 8px; text-align: center; }
+.result-score { margin-bottom: 8px; font-family: var(--serif); font-size: 84px; line-height: 1; letter-spacing: -.04em; }
+
+.actions { display: grid; grid-template-columns: 1fr 2fr; gap: 8px; margin-top: 16px; }
+.quit { display: block; margin: 28px auto 0; }

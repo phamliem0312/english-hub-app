@@ -27,7 +27,7 @@ Mục tiêu không phải học thật nhiều ngữ pháp hay từ vựng, mà 
 ## Tính năng
 
 - **Hôm nay:** tự tính tuần/ngày học từ ngày bắt đầu. Checklist 5 khối học của ngày kèm link tài liệu (tuần 1–4: VOA Let's Learn English, tuần 5–8: British Council, tuần 9–12: BBC), thanh tiến độ, nút đặt lại tiến độ ngày. Ngày 1 là lịch *Getting Started* (kiểm tra trình độ → VOA Lesson 1 → shadowing → tự giới thiệu → ôn cụm từ). Nhắc phương pháp nghe 4 bước. Chủ nhật nhắc ghi âm so sánh.
-- **Mục lục:** 84 ngày xếp theo 3 giai đoạn và 12 tuần. Mỗi ngày hiện trạng thái (✓ xong, số khối đã làm, viền vàng là hôm nay), mỗi tuần hiện số ngày đã xong và đã tự chấm hay chưa. Nhấn vào một ngày để mở checklist của ngày đó và đánh dấu bù cho ngày đã qua. Ngày tương lai chỉ xem trước được. Ở trang Hôm nay có nút ‹ ngày trước / ngày sau ›.
+- **Mục lục:** 84 ngày xếp theo 3 giai đoạn và 12 tuần. Mỗi ngày hiện trạng thái (xanh = xong, vàng = làm dở kèm số khối, viền đậm là hôm nay), mỗi tuần hiện số ngày đã xong và đã tự chấm hay chưa. Nhấn vào một ngày để mở checklist của ngày đó và đánh dấu bù cho ngày đã qua. Ngày tương lai chỉ xem trước được. Ở trang Hôm nay có nút ‹ ngày trước / ngày sau ›.
 - **Lộ trình 12 tuần:** mục tiêu 3 giai đoạn, lịch 1 giờ, tỷ lệ thời gian, 4 nguồn tài liệu miễn phí, bảng 12 tuần (nhấn để xem đề luyện nói). Có thể đổi ngày bắt đầu.
 - **Luyện nói:**
   - Đề nói của tuần (nói tự do 1–3 phút), bài mẫu *Introduce yourself*, 3 tình huống IT (báo cáo tiến độ, khi chưa hiểu, họp đối tác), hoặc dán transcript bất kỳ để shadowing.
@@ -72,9 +72,12 @@ npm test          # unit test bằng node:test
 ```
 
 Cấu trúc:
-- [src/pages/EnglishHub.jsx](src/pages/EnglishHub.jsx): giao diện, TTS, ghi âm, nhận dạng giọng nói, lưu trữ.
-- [src/pages/learning.js](src/pages/learning.js): nội dung lộ trình và logic thuần (tính ngày/tuần, lịch ngày, ôn ngắt quãng, chấm shadowing).
-- [src/pages/learning.test.js](src/pages/learning.test.js): test cho phần logic.
+- [src/App.jsx](src/App.jsx): khung trang + điều hướng (`#home`, `#toc`, `#plan`, `#speak`, `#phrases`, `#track`).
+- [src/hooks/useAppData.js](src/hooks/useAppData.js): toàn bộ dữ liệu được lưu và các thao tác trên nó.
+- [src/pages/](src/pages/): mỗi trang một thư mục (`today`, `contents`, `plan`, `speak`, `phrases`, `track`, `tests`), component con và CSS riêng nằm cạnh trang.
+- [src/components/](src/components/): `layout/` (sidebar, thanh tab mobile) và `ui/` (Icon, PageHeader, Section, Progress, Tag, MicButton, WordDiff).
+- [src/styles/global.css](src/styles/global.css): design tokens (sáng/tối), kiểu cơ bản, nút, ô nhập, layout.
+- [src/lib/](src/lib/): `learning.js` (nội dung lộ trình + logic thuần, có test), `browser.js` (TTS, STT, gọi AI), `storage.js` (localStorage/IndexedDB), `format.js`.
 - [server/ai-proxy.js](server/ai-proxy.js): proxy gọi Claude, API key chỉ nằm ở server.
 - [server.js](server.js): server production bằng `node:http`.
 

@@ -1,0 +1,24 @@
+.stats { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); margin: 0; border-block: 1px solid var(--rule); }
+.stats > div { padding: 16px 18px; }
+.stats > div:first-child { padding-left: 0; }
+.stats > div + div { border-left: 1px solid var(--rule); }
+.stats dt { font-size: 12.5px; color: var(--muted); }
+.stats dd { margin: 6px 0 0; font-family: var(--serif); font-size: 34px; line-height: 1; letter-spacing: -.02em; font-variant-numeric: tabular-nums; }
+.stats dd small { font-size: 18px; color: var(--muted); }
+@media (max-width: 600px) {
+  .stats { grid-template-columns: 1fr 1fr; }
+  .stats > div:nth-child(3) { border-left: 0; padding-left: 0; }
+  .stats > div:nth-child(n+3) { border-top: 1px solid var(--rule); }
+}
+
+.tasks { margin-top: 4px; }
+.task { display: grid; grid-template-columns: 24px minmax(0, 1fr) auto; gap: 16px; padding: 18px 0; border-top: 1px solid var(--rule); }
+.task:first-child { border-top: 0; }
+.task .check { margin-top: 1px; }
+.task-kind { margin-bottom: 2px; font-size: 12.5px; font-weight: 600; color: var(--accent); }
+.task-desc { margin: 2px 0 10px; font-size: 14px; color: var(--ink-2); }
+.task-time { font-family: var(--serif); font-size: 17px; color: var(--muted); white-space: nowrap; font-variant-numeric: tabular-nums; }
+.task.done .h3 { color: var(--muted); text-decoration: line-through; text-decoration-color: var(--rule-2); }
+.task.done .task-kind { color: var(--muted); }
+
+.score-big { font-family: var(--serif); font-size: 40px; line-height: 1; letter-spacing: -.02em; }
